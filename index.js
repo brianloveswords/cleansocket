@@ -22,9 +22,7 @@ function safesocket(file, done) {
   }
 
   function checkActive(next) {
-    const socket = net.connect({path: file})
-
-    socket.on('connect', function () {
+    const socket = net.connect({path: file}, function () {
       socket.destroy()
       socket.removeAllListeners()
       return done(new SocketNotDead(file))

@@ -3,11 +3,13 @@ const test = require('tap').test
 const net = require('net')
 const cleansocket = require('..')
 const fork = require('child_process').fork
+const domain = require('domain')
+
 
 test('no file, should be fine', function (t) {
   const nothing = filepath('not-a-file')
   cleansocket(nothing, function (err, file) {
-    t.same(file, nothing)
+    t.same(file, nothing, 'no file exists')
     t.end()
   })
 })
@@ -19,11 +21,11 @@ test('a normals files', function (t) {
   t.plan(2)
 
   cleansocket(normal, function (err) {
-    t.same(err.name, 'FileExists')
+    t.same(err.name, 'FileExists', 'file exists, is a file')
   })
 
   cleansocket(directory, function (err) {
-    t.same(err.name, 'FileExists')
+    t.same(err.name, 'FileExists', 'file exists, is a directory')
   })
 })
 
@@ -31,7 +33,7 @@ test('dead socket', function (t) {
   const dead = filepath('dead.socket')
   makeDeadSocket(function () {
     cleansocket(dead, function (err, file) {
-      t.same(file, dead)
+      t.same(file, dead, 'socket is dead')
       t.end()
     })
   })
@@ -39,9 +41,14 @@ test('dead socket', function (t) {
 
 test('alive socket', function (t) {
   const live = filepath('live.socket')
-  makeLiveSocket(function () {
+  makeLiveSocket(function (server) {
+    server.on('error', function (err) {
+      console.log('whaaaaaaaaaaaaaat')
+    })
+
     cleansocket(live, function (err, file) {
-      t.same(err.name, 'SocketNotDead')
+      t.same(err.name, 'SocketNotDead', 'error, socket not dead')
+      server.close()
       t.end()
     })
   })
@@ -71,9 +78,10 @@ function makeDeadSocket(callback) {
 function makeLiveSocket(callback) {
   const server =
     net.createServer(function (socket) {
-      socket.write('oh hey')
-      socket.end()
+      // noop
     }).listen(socket('live.socket'))
   server.unref()
-  server.on('listening', callback)
+  server.on('listening', function () {
+    callback(server)
+  })
 }
