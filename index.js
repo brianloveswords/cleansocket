@@ -16,7 +16,7 @@ function safesocket(file, done) {
   function checkType(next) {
     fs.stat(file, function (err, stats) {
       if (!stats.isSocket())
-        return done(new FileExistsError(file))
+        return done(new FileExistsError(file, stats))
       return next()
     })
   }
@@ -50,11 +50,13 @@ function safesocket(file, done) {
   ])
 }
 
-function FileExistsError (file) {
+function FileExistsError (file, stats) {
   const msg = 'File %s exists and is not a socket file'
   const err = new Error(format(msg, file))
   err.stack = fixStack(err)
   err.name = err.code = 'FileExists'
+  err.filename = file
+  err.stats = stats
   return err
 }
 
