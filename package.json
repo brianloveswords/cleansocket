@@ -16,7 +16,8 @@
   "keywords": [
     "http",
     "net",
-    "socket"
+    "socket",
+    "EADDRINUSE"
   ],
   "author": "Brian J Brennan",
   "license": "MIT",
