@@ -1,8 +1,10 @@
-# cleansocket
+# cleansocket [![Build Status](https://secure.travis-ci.org/brianloveswords/cleansocket.png?branch=master)](http://travis-ci.org/brianloveswords/cleansocket)
 
 Cleans up old sockets before listening on them.
 
-Before deleting overwriting an old socket, this ensures that the file is indeed a socket and that it's not still listening for connections.
+When trying to listen on a socketfile, a server will emit an `EADDRINUSE` error even if the socket is no longer alive. @dshaw [came up with a rad solution](https://gist.github.com/dshaw/9f93cdcd3a77b9142e51) but it still doesn't check to see if the socket is dead before blowing it away.
+
+`cleansocket` ensures that the file is indeed a socket and that it's not still listening for connections before it deletes the file. It also provides a way to override all `.listen()` methods so it does this automatically.
 
 ## Install
 
