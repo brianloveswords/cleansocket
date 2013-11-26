@@ -48,7 +48,7 @@ server.listen('/tmp/http-echo.sock')
 
 #### <code>FileExists</code>
 
-Emitted if the file exists and is **not** a socket, a FileExists error will be emitted to `error`. The following properties are added to the error in addition to the standard ones:
+Emitted if the file exists and is **not** a socket. The following properties are added to the error in addition to the standard ones:
 
 * `stats`: An [fs.Stats](http://nodejs.org/api/fs.html#fs_class_fs_stats) object.
 * `filename`: Name of the file
