@@ -1,4 +1,4 @@
-const debug = require('../hijack')
+const debug = require('../listen')
 
 const path = require('path')
 const test = require('tap').test

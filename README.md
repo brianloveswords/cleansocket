@@ -30,7 +30,7 @@ cleansocket('/tmp/echo.sock', function(error, socketfile) {
 You can also globally hijack all `.listen()` functions:
 
 ```js
-require('cleansocket/hijack')
+require('cleansocket/listen')
 
 const net = require('net')
 const server = http.createServer()
