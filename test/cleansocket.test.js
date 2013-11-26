@@ -1,12 +1,12 @@
 const path = require('path')
 const test = require('tap').test
 const net = require('net')
-const safesocket = require('..')
+const cleansocket = require('..')
 const fork = require('child_process').fork
 
 test('no file, should be fine', function (t) {
   const nothing = filepath('not-a-file')
-  safesocket(nothing, function (err, file) {
+  cleansocket(nothing, function (err, file) {
     t.same(file, nothing)
     t.end()
   })
@@ -18,11 +18,11 @@ test('a normals files', function (t) {
 
   t.plan(2)
 
-  safesocket(normal, function (err) {
+  cleansocket(normal, function (err) {
     t.same(err.name, 'FileExists')
   })
 
-  safesocket(directory, function (err) {
+  cleansocket(directory, function (err) {
     t.same(err.name, 'FileExists')
   })
 })
@@ -30,7 +30,7 @@ test('a normals files', function (t) {
 test('dead socket', function (t) {
   const dead = filepath('dead.socket')
   makeDeadSocket(function () {
-    safesocket(dead, function (err, file) {
+    cleansocket(dead, function (err, file) {
       t.same(file, dead)
       t.end()
     })
@@ -40,7 +40,7 @@ test('dead socket', function (t) {
 test('alive socket', function (t) {
   const live = filepath('live.socket')
   makeLiveSocket(function () {
-    safesocket(live, function (err, file) {
+    cleansocket(live, function (err, file) {
       t.same(err.name, 'SocketNotDead')
       t.end()
     })
