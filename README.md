@@ -6,6 +6,8 @@ When trying to listen on a socketfile, a server will emit an `EADDRINUSE` error 
 
 `cleansocket` ensures that the file is indeed a socket and that it's not still listening for connections before it deletes the file. It also provides a way to override all `.listen()` methods so it does this automatically.
 
+This is really convenient if you want to use [supervisor](https://github.com/isaacs/node-supervisor) or some other process restarter.
+
 ## Install
 
 ```bash
