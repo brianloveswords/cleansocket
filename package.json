@@ -1,12 +1,12 @@
 {
   "name": "cleansocket",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cleans up old sockets before listening",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "dependencies": { },
+  "dependencies": {},
   "devDependencies": {
     "tap": "~0.4.6"
   },
